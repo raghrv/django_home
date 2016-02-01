@@ -26,10 +26,13 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DJANGO_SETTINGS_MODULE = "rag_projs.settings"
+
 # Application definition
 
 INSTALLED_APPS = (
     'books',
+    'polls',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,6 +54,8 @@ ROOT_URLCONF = 'rag_projs.urls'
 
 WSGI_APPLICATION = 'rag_projs.wsgi.application'
 
+
+DJANGO_SETTINGS_MODULE = 'rag_projs.settings.py'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

@@ -13,8 +13,8 @@ class Publisher(models.Model):
 
 class Author(models.Model):
     fname = models.CharField(max_length=50)
-    lname = models.CharField(max_length=50)
-    email = models.EmailField()
+    lname = models.CharField('Last name', max_length=50)
+    email = models.EmailField(blank=True, verbose_name='Email')
 
 class Book(models.Model) :
     title = models.CharField(max_length=100)

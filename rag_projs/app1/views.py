@@ -1,12 +1,37 @@
 #from django.shortcuts import render
 from django.http import HttpResponse
 import test_view
-import json
+import json, re
 
 def display(request):
-    req_info = str(request).split(',')[:6]
+    req_info = map(lambda x:str(x.strip()), str(request).split(',')[:])
+    res_ar = []
+    res_ar += [' : '.join(map(str, x)) for x in sorted(request.META.items(), key=lambda x:x[0])]
+    tmp_ar = []
+    for x in req_info:
+        if re.search(':{', x):
+           if tmp_ar:
+               res_ar.append(', '.join(tmp_ar))
+           tmp_ar = [x]
+           continue
+        if not tmp_ar:
+           res_ar.append(x)
+        elif '}' in x:
+           tmp_ar.append(x)
+           res_ar.append(', '.join(tmp_ar))
+           tmp_ar = []
+        else:
+           tmp_ar.append(x)
+    return HttpResponse('<hr><br>'.join(res_ar))
     #print '<br><br>RAG<br><br>'
-    return HttpResponse('<br>'.join(req_info[:]))
+    res_ar = []
+    res_ar += [request.path]
+    res_ar += [request.get_host()]
+    res_ar += [request.get_full_path()]
+    res_ar += [str(request.is_secure())]
+    res_ar += req_info[:]
+    #res_ar = [str(request.META)]
+    return HttpResponse('<hr><br>'.join([x for x in res_ar if 1 or x[2:6] == 'META']))
     return HttpResponse(test_view.ttest(3, str(request)).test_view_rep())
     return HttpResponse(test_view.ttest(5, str(request) + '\n').test_view_rep())
 
